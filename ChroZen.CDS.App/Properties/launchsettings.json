@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "ChroZen.CDS.App (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "ChroZen.CDS.App (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
