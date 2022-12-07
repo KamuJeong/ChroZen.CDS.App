@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CDS.Core;
 using CDS.InstrumentModel;
 using ChroZen.CDS.App.Contracts.Services;
 using ChroZen.CDS.App.Contracts.ViewModels;
@@ -13,14 +14,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ChroZen.CDS.App.ViewModels;
 
-public class ObserableDevice : ObservableObject
+public class ObservableDevice : ObservableObject
 {
     private Device Device
     {
         get;
     }
 
-    public ObserableDevice(Device device)
+    public ObservableDevice(Device device)
     {
         Device = device;
     }
@@ -31,13 +32,37 @@ public class ObserableDevice : ObservableObject
         set => SetProperty(Device.Name, value, Device, (d, v) => d.Name = v);
     }
 
-    public string? Model
+    public string? Model => Device.Model;
+ 
+    public string? SerialNumber => Device.SerialNumber;
+
+    public string? Maker => (string?)Device.CreateReferInstance("Maker");
+
+    public DeviceChannel[]? Channels => (DeviceChannel[]?)Device.CreateReferInstance("Channels");
+}
+
+
+public class ObservableSignal : ObservableObject
+{
+    private SignalSet Signal
     {
-        get => Device.Model;
-        set => SetProperty(Device.Model, value, Device, (d, v) => d.Model = v);
+        get;
     }
 
-    public string? SerialNumber => Device.SerialNumber;
+    public ObservableSignal(SignalSet signal)
+    {
+        Signal = signal;
+    }
+
+    public string? Name
+    {
+        get => Signal.Name;
+        set => SetProperty(Signal.Name, value, Signal, (s, v) => s.Name = v);
+    }
+
+    public string? Channel => string.Join(" ", Signal.Device?.Name, Signal.Channel+1);
+
+    public string? Unit => Signal.Unit;
 }
 
 public class InstrumentSettingsViewModel : ObservableRecipient, INavigationAware
@@ -49,14 +74,20 @@ public class InstrumentSettingsViewModel : ObservableRecipient, INavigationAware
         set => SetProperty(ref instrument, value);
     }
 
-    public ObservableCollection<ObserableDevice> Devices
+    public ObservableCollection<ObservableDevice> Devices
+    {
+        get;
+    }
+
+    public ObservableCollection<ObservableSignal> Signals
     {
         get;
     }
 
     public InstrumentSettingsViewModel()
     {
-        Devices = new ObservableCollection<ObserableDevice>();
+        Devices = new();
+        Signals = new();
     }
 
     public void OnNavigatedFrom()
@@ -74,7 +105,12 @@ public class InstrumentSettingsViewModel : ObservableRecipient, INavigationAware
 
             foreach (var device in Instrument.Devices)
             {
-                Devices.Add(new ObserableDevice(device));
+                Devices.Add(new ObservableDevice(device));
+            }
+
+            foreach (var signal in Instrument.Signals)
+            {
+                Signals.Add(new ObservableSignal(signal));
             }
         }
     }

@@ -12,10 +12,22 @@
     behaviors:NavigationViewHeaderBehavior.HeaderContext="Instrument Settings">
 
     <Page.Resources>
-        <DataTemplate x:Key="DeviceListViewTemplate" x:DataType="vm:ObserableDevice">
+        <DataTemplate x:Key="DeviceListViewTemplate" x:DataType="vm:ObservableDevice">
             <StackPanel Margin="0,5,0,5" >
                 <TextBox Text="{x:Bind Name, Mode=TwoWay}" PlaceholderText="Device Name" />
-                <TextBlock Text="{x:Bind Model}" />
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="8,0,0,0">
+                    <TextBlock Text="{x:Bind Maker}" />
+                    <TextBlock Text="{x:Bind Model}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SignalListViewTemplate" x:DataType="vm:ObservableSignal">
+            <StackPanel Margin="0,5,0,5" >
+                <TextBox Text="{x:Bind Name, Mode=TwoWay}" PlaceholderText="Signal Name" />
+                <StackPanel Orientation="Horizontal" Spacing="8" Margin="8,0,0,0">
+                    <TextBlock Text="{x:Bind Channel}" />
+                </StackPanel>
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
@@ -38,21 +50,45 @@
                      MinWidth="200"/>
         </StackPanel>
 
-        <StackPanel Grid.Row="1"
-                    Margin="0,8,0,8">
+        <Grid Grid.Row="1" Margin="0,8,4,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
             <StackPanel Spacing="8" Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBlock Text="Devices" VerticalAlignment="Center"/>
                 <Button Content="+" />
                 <Button Content="-" />
             </StackPanel>
-            <ListView BorderThickness="1" 
+            <ListView Grid.Row="1" 
+                      BorderThickness="1" 
                       SelectionMode="Multiple"
                       BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"                        
                       ItemsSource="{x:Bind ViewModel.Devices}"
                       ItemTemplate="{StaticResource DeviceListViewTemplate}">
             </ListView>
-        </StackPanel>
+        </Grid>
 
+        <Grid Grid.Row="1" Grid.Column="1" Margin="4,8,0,8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Spacing="8" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBlock Text="Signals" VerticalAlignment="Center"/>
+                <Button Content="+" />
+                <Button Content="-" />
+            </StackPanel>
+            <ListView Grid.Row="1" 
+                      BorderThickness="1" 
+                      SelectionMode="Multiple"
+                      BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"                        
+                      ItemsSource="{x:Bind ViewModel.Signals}"
+                      ItemTemplate="{StaticResource SignalListViewTemplate}">
+            </ListView>
+        </Grid>
 
     </Grid>
 </Page>

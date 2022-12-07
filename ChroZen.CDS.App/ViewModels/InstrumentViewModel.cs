@@ -29,12 +29,14 @@ public class DeviceCollectionItem
         get; init;
     }
 
+
     public DeviceCollectionItem(Device device)
     {
         Device = device;
         Monitor = (UIElement?)device.CreateReferInstance("Monitor");
     }
 }
+
 
 public class InstrumentViewModel : ObservableRecipient
 {
