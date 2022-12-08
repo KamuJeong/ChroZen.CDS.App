@@ -15,6 +15,8 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Views\Dialog\AddDeviceDialog.xaml" />
+    <None Remove="Views\Dialog\AddSignalDialog.xaml" />
     <None Remove="Views\InstrumentPage.xaml" />
     <None Remove="Views\InstrumentSettingsPage.xaml" />
     <None Remove="Views\SamplesPage.xaml" />
@@ -44,6 +46,12 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\Dialog\AddSignalDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\Dialog\AddDeviceDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\InstrumentSettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

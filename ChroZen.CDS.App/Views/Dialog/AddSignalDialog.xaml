@@ -1,0 +1,56 @@
+﻿<ContentDialog
+    x:Class="ChroZen.CDS.App.Views.Dialog.AddSignalDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ChroZen.CDS.App.Views.Dialog"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Title="Add Signal"
+    PrimaryButtonText="Add"
+    IsPrimaryButtonEnabled="{x:Bind IsNotNull(ChannelList.SelectedItem), Mode=OneWay}"
+    CloseButtonText="Cancel">
+
+    <ContentControl.Resources>
+        <DataTemplate x:Key="ChannelListViewTemplate"
+                      x:DataType="local:PairedDeviceChannel">
+            <StackPanel Margin="0,5,0,5" >
+                <TextBlock Text="{x:Bind}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <x:Double x:Key="ContentDialogMaxWidth">1000</x:Double>
+    </ContentControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" MinWidth="300" />
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Available channels"/>
+        <StackPanel Orientation="Horizontal" Spacing="8"
+                    Grid.Column="1" Margin="8,0,0,0">
+            <TextBlock Text="Channel: " />
+            <TextBlock Text="{x:Bind (local:PairedDeviceChannel)ChannelList.SelectedItem, Mode=OneWay}" />
+        </StackPanel>
+
+        <ListView x:Name="ChannelList" x:FieldModifier="Public" Grid.Row="1"
+                  BorderThickness="1" 
+                  SelectionMode="Single"
+                  BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"                        
+                  ItemsSource="{x:Bind AvailableChannels}"
+                  ItemTemplate="{StaticResource ChannelListViewTemplate}" />
+
+        <TextBox x:Name="SignalName" x:FieldModifier="Public"
+                 Grid.Row="1" Grid.Column="1" Margin="8,0,0,0" 
+                 MinWidth="300" VerticalAlignment="Top"
+                 PlaceholderText="Enter name" />
+    </Grid>
+</ContentDialog>

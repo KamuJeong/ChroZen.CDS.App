@@ -58,15 +58,21 @@
             
             <StackPanel Spacing="8" Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBlock Text="Devices" VerticalAlignment="Center"/>
-                <Button Content="+" />
-                <Button Content="-" />
+                <Button Content="+"
+                        Command="{x:Bind ViewModel.AddDevice}"
+                        CommandParameter="{x:Bind XamlRoot}"/>
+                <Button Content="-"
+                        Command="{x:Bind ViewModel.DeleteDevice}"
+                        CommandParameter="{x:Bind DeviceList.SelectedItems, Mode=OneWay}"/>
             </StackPanel>
-            <ListView Grid.Row="1" 
+            <ListView x:Name="DeviceList" Grid.Row="1" 
                       BorderThickness="1" 
                       SelectionMode="Multiple"
                       BorderBrush="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"                        
                       ItemsSource="{x:Bind ViewModel.Devices}"
-                      ItemTemplate="{StaticResource DeviceListViewTemplate}">
+                      ItemTemplate="{StaticResource DeviceListViewTemplate}"
+                      SelectionChanged="{x:Bind ViewModel.DeviceListSelectionChanged }"
+                      >
             </ListView>
         </Grid>
 
@@ -78,7 +84,9 @@
 
             <StackPanel Spacing="8" Orientation="Horizontal" Margin="0,0,0,8">
                 <TextBlock Text="Signals" VerticalAlignment="Center"/>
-                <Button Content="+" />
+                <Button Content="+"
+                        Command="{x:Bind ViewModel.AddSignal}"
+                        CommandParameter="{x:Bind XamlRoot}"/>
                 <Button Content="-" />
             </StackPanel>
             <ListView Grid.Row="1" 

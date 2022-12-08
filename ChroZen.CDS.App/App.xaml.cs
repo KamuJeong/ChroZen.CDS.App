@@ -17,6 +17,7 @@ using System.Reflection;
 using CDS.Core;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using System.Runtime.Loader;
+using ChroZen.CDS.App.Contracts.PlugIns;
 
 namespace ChroZen.CDS.App;
 
@@ -71,6 +72,7 @@ public partial class App : Application
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IDeviceProvider, DeviceProvider>();
             services.AddSingleton<Instrument>(new Instrument(null, "HPLC"));
 
             // Views and ViewModels
@@ -101,11 +103,18 @@ public partial class App : Application
 
         await App.GetService<IActivationService>().ActivateAsync(args);
 
+        InitializeDeviceProvier();
         InitializeInstrumentModel();
 
     }
 
-    private static void InitializeInstrumentModel()
+    private void InitializeDeviceProvier()
+    {
+        var provider = App.GetService<IDeviceProvider>();
+        provider.Configure(typeof(global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice).Assembly.Location);
+    }
+
+    private void InitializeInstrumentModel()
     {
         var instrument = App.GetService<Instrument>();
         new global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice(instrument, "ChroZen Pump 1");
