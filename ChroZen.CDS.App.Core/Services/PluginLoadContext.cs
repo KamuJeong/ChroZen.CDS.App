@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -11,17 +12,32 @@ public class PluginLoadContext : AssemblyLoadContext
 {
     private readonly AssemblyDependencyResolver _resolver;
 
+    private string _pluginDirectory;
+
     public PluginLoadContext(string pluginPath)
     {
+        _pluginDirectory = Path.GetFullPath(Path.GetDirectoryName(pluginPath));
         _resolver = new AssemblyDependencyResolver(pluginPath);
     }
 
     protected override Assembly Load(AssemblyName assemblyName)
     {
+        if (new string[] 
+            { 
+                "CDS.Core", 
+                "CDS.InstrumentModel", 
+            }.Contains(assemblyName.Name))
+        {
+            return null;
+        }
+
         var assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
         if (assemblyPath != null)
         {
-            return LoadFromAssemblyPath(assemblyPath);
+ //           if (Path.GetFullPath(assemblyPath).StartsWith(_pluginDirectory, true, CultureInfo.CurrentCulture))
+            {
+                return LoadFromAssemblyPath(assemblyPath);
+            }
         }
 
         return null;

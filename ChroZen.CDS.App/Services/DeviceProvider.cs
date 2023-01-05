@@ -24,13 +24,22 @@ public class DeviceProvider : IDeviceProvider
 
     private Assembly? GetAssembly(string assembly)
     {
-        var dll = AssemblyLoadContext.Default.Assemblies.FirstOrDefault(a => Path.Equals(a.Location, assembly));
-        if (dll == null)
+        foreach (var a in AssemblyLoadContext.Default.Assemblies)
         {
-            PluginLoadContext pluginLoadContext = new PluginLoadContext(assembly);
-            return pluginLoadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(assembly)));
+            try
+            {
+                if (Path.GetFileNameWithoutExtension(a.Location) == Path.GetFileNameWithoutExtension(assembly))
+                {
+                    return a;
+                }
+            }
+            catch
+            {
+            
+            }
         }
-        return dll;
+        PluginLoadContext pluginLoadContext = new PluginLoadContext(assembly);
+        return pluginLoadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(assembly)));
     }
 
     public void Configure(string assembly)
@@ -43,12 +52,12 @@ public class DeviceProvider : IDeviceProvider
             {
                 if (type.IsSubclassOf(typeof(Device)))
                 {
-                    if (Activator.CreateInstance(type, new object[] { null, "" }) is Device device)
+                    if (Activator.CreateInstance(type, new object?[] { null, "" }) is Device device)
                         Manifest[type] = new DeviceDriver(assembly, device.Model,
                                                             device.CreateReferInstance("Maker") as string,
                                                             device.CreateReferInstance("Author") as string,
                                                             dll.GetName().Version?.ToString(),
-                                                            type.FullName);
+                                                            type.FullName!);
                 }
             }
         }
@@ -61,7 +70,7 @@ public class DeviceProvider : IDeviceProvider
         {
             var type = dll.GetType(drv.Type);
             if (type != null)
-                return Activator.CreateInstance(type, new object[] { instrument, name }) as Device;
+                return Activator.CreateInstance(type, new object?[] { instrument, name }) as Device;
         }
         return null;
     }

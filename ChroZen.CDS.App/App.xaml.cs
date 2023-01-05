@@ -111,13 +111,13 @@ public partial class App : Application
     private void InitializeDeviceProvier()
     {
         var provider = App.GetService<IDeviceProvider>();
-        provider.Configure(typeof(global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice).Assembly.Location);
+        provider.Configure("C:\\Users\\khjun\\source\\repos\\Chromass.ChroZenPump\\CDS.Chromass.ChroZenPump\\bin\\Debug\\net6.0-windows10.0.19041.0\\CDS.Chromass.ChroZenPump.dll");
     }
 
     private void InitializeInstrumentModel()
     {
         var instrument = App.GetService<Instrument>();
-        new global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice(instrument, "ChroZen Pump 1");
-        new global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice(instrument, "ChroZen Pump 2");
+//        new global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice(instrument, "ChroZen Pump 1");
+//        new global::CDS.Chromass.ChroZenPump.ChroZenPumpDevice(instrument, "ChroZen Pump 2");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,12 +30,12 @@ public class DeviceDriver
     {
         get; init;
     }
-    public string? Type
+    public string Type
     {
         get; init;
     }
 
-    public DeviceDriver(string location, string? model, string? maker, string? author, string? version, string? type)
+    public DeviceDriver([NotNull] string location, string? model, string? maker, string? author, string? version, [NotNull] string type)
     {
         Location = location;
         Model = model;
