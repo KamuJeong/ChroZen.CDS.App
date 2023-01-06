@@ -12,6 +12,7 @@ using CDS.Core;
 using CDS.InstrumentModel;
 using ChroZen.CDS.App.Contracts.Services;
 using ChroZen.CDS.App.OxyPlot.Axes;
+using ChroZen.CDS.App.OxyPlot.Legends;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml;
@@ -201,7 +202,7 @@ public class InstrumentViewModel : ObservableRecipient
         ,
         Legends =
         {
-            new Legend
+            new Legend2
             {
                 LegendPosition = LegendPosition.LeftTop,
             }
