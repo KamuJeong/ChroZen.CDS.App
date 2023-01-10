@@ -24,7 +24,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{x:Bind Instrument.Name}" Style="{ThemeResource TitleTextBlockStyle}" />
                 <Button Grid.Column="1" Content="Connect" Command="{x:Bind Connect}" />
-                <Button Grid.Column="2" Content="DisConnect" Command="{x:Bind Disconnect}" />
+                <Button Grid.Column="2" Content="Disconnect" Command="{x:Bind Disconnect}" />
                 <Button Grid.Column="3" Content="Settings" Command="{x:Bind Settings}" />
             </Grid>
         </DataTemplate>
@@ -45,10 +45,12 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate x:DataType="vm:DeviceCollectionItem">
-                    <Border BorderBrush="DarkSlateGray"  BorderThickness="4">
+                    <Border BorderBrush="DarkSlateGray"  BorderThickness="1" CornerRadius="4">
                         <StackPanel>
-                            <TextBlock Text="{x:Bind Device.Name}" />
-                            <ContentControl Content="{x:Bind Monitor}" />
+                            <Border Background="CadetBlue" CornerRadius="4" >
+                                <TextBlock Text="{x:Bind Device.Name}" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,4,0,8" />
+                            </Border>
+                            <ContentControl Content="{x:Bind Monitor}" Margin="8" />
                         </StackPanel>
                     </Border>
                 </DataTemplate>
